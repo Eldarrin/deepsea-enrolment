@@ -1,0 +1,89 @@
+<script src="enrolmentctrl.js"></script>
+<div class="container" ng-model="enrolment">
+	<div class="row">
+		<div>
+			<ol class="breadcrumb">
+				<li><a href="#">Home</a></li>
+			</ol>
+		</div>
+	</div>
+	<div class="row">
+		<div class="panel panel-primary">
+			<form id="myform">
+				<p>
+					<label>Client</label><br> 
+					<label ng-repeat="client in client"><input type="radio" menuName="clientId" value="{{ client.clientId }}">{{ client.clientName }}</label>
+				</p>
+				<p>
+					<label>Product</label><br> <label> <input type="radio"
+						menuName="productId" value="product-1"> Barclays Premier MPI
+					</label>
+				</p>
+				<p>
+					<label>Title</label><br> <label> <input type="radio"
+						menuName="title" value="mr"> Mr
+					</label> <label> <input type="radio" menuName="title" value="mrs">
+						Mrs
+					</label> <label> <input type="radio" menuName="title" value="miss">
+						Miss
+					</label>
+				</p>
+				<p>
+					<label>First menuName</label><br> <input type="text"
+						menuName="firstName">
+				</p>
+				<p>
+					<label>Last menuName</label><br> <input type="text"
+						menuName="lastName">
+				</p>
+				<p>
+					<label>Email</label><br> <input type="email" menuName="email"
+						required>
+				</p>
+
+				<p>
+					<label> <input type="checkbox" value="termsAgreed"> I
+						agree to the <a href="/terms">terms and conditions</a>
+					</label>
+				</p>
+				<p>
+					<button id="btn">Sign up</button>
+					<button type="reset">Reset form</button>
+				</p>
+			</form>
+
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+  $("#btn").click(function(e){
+     var jsonData = {};
+
+   var formData = $("#myform").serializeArray();
+  // console.log(formData);
+
+   $.each(formData, function() {
+        if (jsonData[this.menuName]) {
+           if (!jsonData[this.menuName].push) {
+               jsonData[this.menuName] = [jsonData[this.menuName]];
+           }
+           jsonData[this.menuName].push(this.value || '');
+       } else {
+           jsonData[this.menuName] = this.value || '';
+       }
+
+
+   });
+   console.log(jsonData);
+    $.ajax(
+    {
+        navLink : "/api/enrolment/add",
+        type: "POST",
+        data : jsonData,
+
+    });
+    e.preventDefault(); 
+});
+});
+</script>
